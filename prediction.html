@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Stock</title>
+    <style>
+        :root {
+            --primary-color: #6a0dad;
+            --secondary-color: #9c27b0;
+            --light-purple: #b39ddb;
+            --white: #ffffff;
+            --light-gray: #f5f5f5;
+            --dark-gray: #333333;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--light-gray);
+            color: var(--dark-gray);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--white);
+            padding: 20px 0;
+            border-radius: 0 0 15px 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+            font-size: 32px;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 20px;
+        }
+        
+        nav ul li a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        nav ul li a:hover {
+            color: var(--light-purple);
+        }
+        
+        .dashboard {
+            margin-top: 30px;
+            background-color: var(--white);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+        
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            color: var(--primary-color);
+            margin: 0;
+        }
+        
+        .btn {
+            background-color: var(--primary-color);
+            color: var(--white);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        .btn:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn i {
+            margin-right: 8px;
+        }
+        
+        .results-container {
+            margin-top: 30px;
+        }
+        
+        .prediction-card {
+            background-color: var(--light-purple);
+            color: var(--white);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .prediction-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .product-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .product-icon {
+            font-size: 24px;
+            margin-right: 15px;
+        }
+        
+        .product-name {
+            font-weight: 600;
+            font-size: 18px;
+        }
+        
+        .priority {
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid var(--primary-color);
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            color: var(--dark-gray);
+            font-size: 14px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            nav ul {
+                margin-top: 15px;
+                justify-content: center;
+            }
+            
+            nav ul li {
+                margin: 0 10px;
+            }
+            
+            .dashboard-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .btn {
+                margin-top: 15px;
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-chart-line"></i>
+                    Smart Stock
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#"><i class="fas fa-home"></i> Home</a></li>
+                        <li><a href="#"><i class="fas fa-history"></i> History</a></li>
+                        <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="dashboard">
+            <div class="dashboard-header">
+                <h1><i class="fas fa-magic"></i> Next Month's Product Predictions</h1>
+                <button id="predictBtn" class="btn">
+                    <i class="fas fa-bolt"></i> Generate Predictions
+                </button>
+            </div>
+            
+            <p>Get AI-powered recommendations for which products to stock up on for maximum profitability next month based on historical sales data.</p>
+            
+            <div class="loading" id="loadingIndicator">
+                <div class="spinner"></div>
+                <p>Analyzing sales patterns and generating predictions...</p>
+            </div>
+            
+            <div class="results-container" id="resultsContainer">
+                <!-- Prediction results will be inserted here -->
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>&copy; 2025 Smart Stock Sales Forecasting System. All rights reserved.</p>
+    </footer>
+    
+    <script>
+        document.getElementById('predictBtn').addEventListener('click', function() {
+            // Show loading indicator
+            document.getElementById('loadingIndicator').style.display = 'block';
+            document.getElementById('resultsContainer').innerHTML = '';
+            
+            // Simulate API call (replace with actual fetch to your Spring Boot backend)
+            setTimeout(() => {
+                fetchPredictions();
+            }, 1500);
+        });
+        
+        function fetchPredictions() {
+            // In a real implementation, this would call your Spring Boot API
+            // fetch('/api/predict')
+            //     .then(response => response.json())
+            //     .then(data => displayResults(data))
+            //     .catch(error => console.error('Error:', error))
+            //     .finally(() => {
+            //         document.getElementById('loadingIndicator').style.display = 'none';
+            //     });
+            
+            // Mock data for demonstration - replace with actual API call
+            const mockPredictions = [
+                { product: "Laptop", priority: "High" },
+                { product: "Smart Watch", priority: "High" },
+                { product: "Washing Machine", priority: "Medium" },
+                { product: "Bluetooth Speaker", priority: "Medium" },
+                { product: "LED TV", priority: "Low" }
+            ];
+            
+            displayResults(mockPredictions);
+            document.getElementById('loadingIndicator').style.display = 'none';
+        }
+        
+        function displayResults(predictions) {
+            const resultsContainer = document.getElementById('resultsContainer');
+            
+            if (predictions.length === 0) {
+                resultsContainer.innerHTML = '<p>No predictions available. Please try again later.</p>';
+                return;
+            }
+            
+            // Get icons based on product type
+            const getProductIcon = (product) => {
+                if (product.includes('Watch')) return 'fas fa-clock';
+                if (product.includes('TV')) return 'fas fa-tv';
+                if (product.includes('Laptop')) return 'fas fa-laptop';
+                if (product.includes('Machine')) return 'fas fa-tshirt';
+                if (product.includes('Speaker')) return 'fas fa-volume-up';
+                return 'fas fa-box';
+            };
+            
+            predictions.forEach((pred, index) => {
+                const card = document.createElement('div');
+                card.className = 'prediction-card';
+                
+                card.innerHTML = `
+                    <div class="product-info">
+                        <i class="${getProductIcon(pred.product)} product-icon"></i>
+                        <div>
+                            <div class="product-name">${pred.product}</div>
+                            <div>Recommended for next month's inventory</div>
+                        </div>
+                    </div>
+                    <div class="priority">${pred.priority} Priority</div>
+                `;
+                
+                resultsContainer.appendChild(card);
+            });
+        }
+    </script>
+</body>
+</html>
