@@ -1,0 +1,113 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Stock Manager</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="container-fluid full-height-container">
+    <div class="row full-height-row">
+      <!-- Left Panel -->
+      <div class="col-md-6 d-none d-md-flex align-items-center justify-content-center bg-gradient-panel text-white">
+        <div class="text-left px-5">
+          <h1 class="fw-bold mb-3">Smart Stock Starts Here</h1>
+          <p class="text-light mb-4">Efficient inventory management for your business</p>
+          <ul class="list-unstyled text-light">
+            <li class="mb-2"><i class="fas fa-chart-line me-2"></i> Real-time Analytics</li>
+            <li class="mb-2"><i class="fas fa-bell me-2"></i> Smart Alerts</li>
+            <li class="mb-2"><i class="fas fa-robot me-2"></i> AI-Powered Predictions</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Right Panel -->
+      <div class="col-md-6 d-flex align-items-center justify-content-center">
+        <div class="auth-box p-4 bg-white shadow rounded" style="width: 100%; max-width: 450px;">
+          <!-- Tabs -->
+          <div class="text-center mb-4">
+            <button class="btn btn-outline-primary me-2 auth-tab active" data-tab="login">Login</button>
+            <button class="btn btn-outline-secondary auth-tab" data-tab="register">Register</button>
+          </div>
+
+          <!-- Login Form -->
+          <div class="auth-form active" id="login-form">
+            <form id="loginForm">
+              <div class="mb-3">
+                <label>Email</label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                  <input type="email" id="loginEmail" class="form-control" required />
+                </div>
+              </div>
+              <div class="mb-3">
+                <label>Password</label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                  <input type="password" id="loginPassword" class="form-control" required />
+                </div>
+              </div>
+              <div class="form-check mb-3">
+                <input type="checkbox" class="form-check-input" id="rememberMe" />
+                <label class="form-check-label" for="rememberMe">Remember Me</label>
+              </div>
+              <button type="submit" class="btn btn-primary w-100">Login</button>
+            </form>
+          </div>
+
+          <!-- Register Form -->
+          <div class="auth-form" id="register-form">
+            <form id="registerForm">
+              <div class="mb-3">
+                <label>Email</label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                  <input type="email" id="registerEmail" class="form-control" required />
+                </div>
+              </div>
+              <div class="mb-3">
+                <label>Password</label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                  <input type="password" id="registerPassword" class="form-control" required />
+                </div>
+              </div>
+              <div class="mb-3">
+                <label>Confirm Password</label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                  <input type="password" id="confirmPassword" class="form-control" required />
+                </div>
+              </div>
+              <div class="mb-3">
+                <label>Business Type</label>
+                <select class="form-select" id="businessType" required>
+                  <option value="">Choose...</option>
+                  <option value="electronics">Electronics</option>
+                  <option value="ayurvedic">Ayurvedic</option>
+                  <option value="grocery">Grocery</option>
+                  <option value="clothing">Clothing</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+              <button type="submit" class="btn btn-success w-100">Register</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>

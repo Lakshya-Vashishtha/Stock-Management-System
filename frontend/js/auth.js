@@ -1,124 +1,85 @@
-document.addEventListener('DOMContentLoaded', function() {
-    // Tab switching functionality
-    const tabs = document.querySelectorAll('.auth-tab');
-    const forms = document.querySelectorAll('.auth-form');
+// assets/js/auth.js
 
-    tabs.forEach(tab => {
-        tab.addEventListener('click', () => {
-            const target = tab.getAttribute('data-tab');
-            
-            // Update tabs
-            tabs.forEach(t => t.classList.remove('active'));
-            tab.classList.add('active');
-            
-            // Update forms
-            forms.forEach(form => {
-                form.classList.remove('active');
-                if (form.id === `${target}-form`) {
-                    form.classList.add('active');
-                }
-            });
-        });
+document.addEventListener('DOMContentLoaded', () => {
+  // Tab switching logic
+  document.querySelectorAll('.auth-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
+
+      tab.classList.add('active');
+      const targetId = `${tab.dataset.tab}-form`;
+      const targetForm = document.getElementById(targetId);
+      if (targetForm) targetForm.classList.add('active');
     });
+  });
 
-    // Form validation and submission
-    const loginForm = document.getElementById('loginForm');
-    const registerForm = document.getElementById('registerForm');
+  const loginForm = document.getElementById('loginForm');
+  const registerForm = document.getElementById('registerForm');
 
-    if (loginForm) {
-        loginForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const email = document.getElementById('loginEmail').value;
-            const password = document.getElementById('loginPassword').value;
-            
-            // Basic validation
-            if (!email || !password) {
-                showAlert('Please fill in all fields', 'error');
-                return;
-            }
+  // Login form submission
+  loginForm?.addEventListener('submit', async (e) => {
+    e.preventDefault();
 
-            // Mock login - replace with actual API call later
-            console.log('Login attempt:', { email, password });
-            showAlert('Login successful!', 'success');
-            // Redirect to dashboard (will be implemented later)
-            // window.location.href = 'dashboard.html';
-        });
+    const email = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPassword').value;
+    const remember = document.getElementById('rememberMe').checked;
+
+    if (!email || !password) {
+      return alert("Please fill in all fields.");
     }
 
-    if (registerForm) {
-        registerForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const email = document.getElementById('registerEmail').value;
-            const password = document.getElementById('registerPassword').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
-            const businessType = document.getElementById('businessType').value;
-            
-            // Basic validation
-            if (!email || !password || !confirmPassword || !businessType) {
-                showAlert('Please fill in all fields', 'error');
-                return;
-            }
+    try {
+      const res = await fetch('http://localhost:8080/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
 
-            if (password !== confirmPassword) {
-                showAlert('Passwords do not match', 'error');
-                return;
-            }
+      if (!res.ok) throw new Error('Login failed');
+      const data = await res.json();
 
-            if (password.length < 6) {
-                showAlert('Password must be at least 6 characters long', 'error');
-                return;
-            }
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('user', JSON.stringify(data.user));
+      if (remember) localStorage.setItem('rememberMe', 'true');
 
-            // Mock registration - replace with actual API call later
-            console.log('Registration attempt:', { email, password, businessType });
-            showAlert('Registration successful!', 'success');
-            
-            // Switch to login form after successful registration
-            document.querySelector('[data-tab="login"]').click();
-        });
+      window.location.href = 'pages/dashboard.html';
+
+    } catch (err) {
+      alert('Login failed. Check credentials.');
+    }
+  });
+
+  // Register form submission
+  registerForm?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const email = document.getElementById('registerEmail').value;
+    const password = document.getElementById('registerPassword').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+    const businessType = document.getElementById('businessType').value;
+
+    if (!email || !password || !confirmPassword || !businessType) {
+      return alert("Please complete all fields.");
     }
 
-    // Alert function
-    function showAlert(message, type) {
-        // Create alert element
-        const alertDiv = document.createElement('div');
-        alertDiv.className = `alert alert-${type === 'error' ? 'danger' : 'success'} alert-dismissible fade show`;
-        alertDiv.setAttribute('role', 'alert');
-        
-        // Add message and close button
-        alertDiv.innerHTML = `
-            ${message}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        `;
-        
-        // Add to form
-        const form = type === 'error' ? 
-            (document.querySelector('.auth-form.active') || document.body) : 
-            document.body;
-        
-        form.insertBefore(alertDiv, form.firstChild);
-        
-        // Auto remove after 3 seconds
-        setTimeout(() => {
-            alertDiv.remove();
-        }, 3000);
+    if (password !== confirmPassword) {
+      return alert("Passwords do not match.");
     }
 
-    // Password visibility toggle (optional enhancement)
-    const passwordInputs = document.querySelectorAll('input[type="password"]');
-    passwordInputs.forEach(input => {
-        const parent = input.parentElement;
-        const toggleBtn = document.createElement('span');
-        toggleBtn.className = 'input-group-text';
-        toggleBtn.innerHTML = '<i class="fas fa-eye"></i>';
-        toggleBtn.style.cursor = 'pointer';
-        
-        toggleBtn.addEventListener('click', () => {
-            const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
-            input.setAttribute('type', type);
-            toggleBtn.innerHTML = type === 'password' ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
-        });
-        
-        parent.appendChild(toggleBtn);
-    });
-}); 
+    try {
+      const res = await fetch('http://localhost:8080/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password, businessType })
+      });
+
+      if (!res.ok) throw new Error('Registration failed');
+      alert('Registered successfully! You can now log in.');
+      document.querySelector('[data-tab="login"]').click();
+
+    } catch (err) {
+      alert('Registration failed. Try a different email.');
+    }
+  });
+});

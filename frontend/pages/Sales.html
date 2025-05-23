@@ -1,0 +1,60 @@
+<!-- frontend/pages/Sales.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Sales History - Stock Management</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <link rel="stylesheet" href="../css/dashboard.css" />
+</head>
+<body>
+  <div class="wrapper">
+    <!-- Sidebar -->
+    <nav id="sidebar">
+      <div class="sidebar-header">
+        <h3>Stock Manager</h3>
+        <p class="business-type">Business Type: <span id="userBusinessType">Electronics</span></p>
+      </div>
+      <ul class="list-unstyled components">
+        <li><a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a></li>
+        <li><a href="AddSales.html"><i class="fas fa-cash-register"></i> Sales Entry</a></li>
+        <li><a href="stock.html"><i class="fas fa-boxes"></i> Stock Management</a></li>
+        <li class="active"><a href="Sales.html"><i class="fas fa-history"></i> Sales History</a></li>
+        <li><a href="low-stock.html"><i class="fas fa-exclamation-triangle"></i> Low Stock</a></li>
+        <li><a href="expiring-products.html"><i class="fas fa-hourglass-end"></i> Expiring Soon</a></li>
+      </ul>
+    </nav>
+
+    <!-- Page Content -->
+    <div id="content">
+      <nav class="navbar navbar-light bg-light">
+        <div class="container-fluid">
+          <button id="sidebarCollapse" class="btn"><i class="fas fa-bars"></i></button>
+          <h4 class="ms-3 mb-0">Sales History</h4>
+        </div>
+      </nav>
+
+      <div class="container my-4">
+        <table class="table table-striped" id="salesTable">
+          <thead class="table-dark">
+            <tr>
+              <th>Product</th>
+              <th>Quantity</th>
+              <th>Date</th>
+              <th>Total (₹)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Filled by JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/Sales.js"></script>
+  <script src="../js/dashboard.js"></script>
+</body>
+</html>
